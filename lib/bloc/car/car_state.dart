@@ -11,8 +11,26 @@ class CarLoaded extends CarState {
   final int totalCars;
   final int currentPage;
   final int totalPages;
+  final bool isLoadingMore;
 
-  CarLoaded(this.cars, this.totalCars, this.currentPage, this.totalPages);
+  CarLoaded(this.cars, this.totalCars, this.currentPage, this.totalPages,
+      {this.isLoadingMore = false});
+
+  CarLoaded copyWith({
+    List<Car>? cars,
+    int? totalCars,
+    int? currentPage,
+    int? totalPages,
+    bool? isLoadingMore,
+  }) {
+    return CarLoaded(
+      cars ?? this.cars,
+      totalCars ?? this.totalCars,
+      currentPage ?? this.currentPage,
+      totalPages ?? this.totalPages,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    );
+  }
 }
 
 class CarError extends CarState {

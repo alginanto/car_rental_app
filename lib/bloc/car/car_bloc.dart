@@ -18,13 +18,14 @@ class CarBloc extends Bloc<CarEvent, CarState> {
       try {
         emit(CarLoading());
         final response = await carRepository.fetchCarResponse(page: currentPage);
-
+        
         currentPage++;
         emit(CarLoaded(
           response.cars,
           response.totalCars,
           currentPage,
           response.totalPages,
+          isLoadingMore: false,
         ));
       } catch (e) {
         emit(CarError("Failed to fetch cars"));
@@ -35,17 +36,24 @@ class CarBloc extends Bloc<CarEvent, CarState> {
 
     on<LoadMoreCars>((event, emit) async {
       if (isFetching) return;
+      if (state is! CarLoaded) return;
+      
+      final currentState = state as CarLoaded;
+      if (currentState.isLoadingMore) return;
+
       isFetching = true;
+      emit(currentState.copyWith(isLoadingMore: true));
 
       try {
         final response = await carRepository.fetchCarResponse(page: currentPage);
-
+        
         currentPage++;
         emit(CarLoaded(
           [...event.currentCars, ...response.cars],
           response.totalCars,
           currentPage,
           response.totalPages,
+          isLoadingMore: false,
         ));
       } catch (e) {
         emit(CarError("Failed to load more cars"));
@@ -55,4 +63,3 @@ class CarBloc extends Bloc<CarEvent, CarState> {
     });
   }
 }
-

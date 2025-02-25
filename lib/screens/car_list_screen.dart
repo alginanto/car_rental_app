@@ -1,3 +1,5 @@
+import 'package:car_rental_app/model/car_model.dart';
+import 'package:car_rental_app/screens/car_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/car/car_bloc.dart';
@@ -33,16 +35,27 @@ class _CarListScreenState extends State<CarListScreen> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: state.cars.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(state.cars[index].name),
-                        subtitle: Text(state.cars[index].brand),
-                      );
-                    },
-                  ),
-                ),
+                    child: ListView.builder(
+                  itemCount: state.cars.length,
+                  itemBuilder: (context, index) {
+                    Car car = state.cars[index];
+                    return ListTile(
+                      leading: Image.network(car.images.isNotEmpty
+                          ? car.images[0]
+                          : 'https://via.placeholder.com/150'),
+                      title: Text(car.name),
+                      subtitle: Text("\$${car.price.rental}/day"),
+                      trailing: Icon(Icons.arrow_forward),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CarDetailScreen(car: car)),
+                        );
+                      },
+                    );
+                  },
+                )),
                 if (state.currentPage < state.totalPages)
                   Padding(
                     padding: const EdgeInsets.all(8.0),

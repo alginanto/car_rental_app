@@ -1,5 +1,3 @@
-
-
 // car.dart
 class Car {
   final String id;
@@ -27,6 +25,13 @@ class Car {
   });
 
   factory Car.fromJson(Map<String, dynamic> json) {
+    // Replace all images with the specified URL
+    List<String> newImages = List.generate(
+      json['images']
+          .length, // Maintain the original number of image entries, or 1 if you always want one image
+      (index) =>
+          "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    );
     return Car(
       id: json['_id'],
       name: json['name'],
@@ -34,7 +39,7 @@ class Car {
       model: json['model'],
       year: json['year'],
       description: json['description'],
-      images: List<String>.from(json['images']),
+      images: newImages,
       availability: json['availability'],
       specifications: Specifications.fromJson(json['specifications']),
       price: Price.fromJson(json['price']),
