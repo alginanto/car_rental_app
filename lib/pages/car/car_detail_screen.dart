@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CarDetailScreen extends StatelessWidget {
   final Car car;
 
-  CarDetailScreen({required this.car});
+  const CarDetailScreen({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {

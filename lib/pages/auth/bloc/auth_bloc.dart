@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../data/auth_repository.dart';
+import '../../../data/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -12,14 +11,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginEvent>(_onLogin);
     on<LogoutEvent>(_onLogout);
     on<CheckAuthStatusEvent>(_onCheckAuthStatus); // New event handler
-   // Check auth status when bloc is created
+    // Check auth status when bloc is created
     add(CheckAuthStatusEvent());
   }
 
   Future<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      final token = await authRepository.register(event.email, event.password, event.name, event.location);
+      final token = await authRepository.register(
+          event.email, event.password, event.name, event.location);
       if (token != null) {
         emit(Authenticated(token));
       } else {
@@ -49,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(Unauthenticated());
   }
 
-    // New method to check authentication status
+  // New method to check authentication status
   Future<void> _onCheckAuthStatus(
       CheckAuthStatusEvent event, Emitter<AuthState> emit) async {
     final token = await authRepository.checkAuthStatus();
