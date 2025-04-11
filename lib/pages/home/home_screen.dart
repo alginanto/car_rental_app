@@ -14,6 +14,40 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Car Rental Service'),
         elevation: 0,
       ),
+      drawer: Container(
+        width: 250,
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Car Rental Service'),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+              ),
+              ListTile(
+                title: Text('Cars'),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: BlocProvider(
         create: (context) => CarBloc(CarRepository()),
         child: const CarListView(),
